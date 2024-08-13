@@ -34,6 +34,8 @@ app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions(
 
 app.MapControllers();
 
+app.MapMethods("/api/heartbeat", ["HEAD"], () => Results.Ok());
+
 app.MapFallbackToFile("/index.html");
 
 app.Run();
