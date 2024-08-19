@@ -1,5 +1,4 @@
 global using HealthCheck.Server;
-using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +24,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -48,6 +49,8 @@ app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions(
 app.MapControllers();
 
 app.MapMethods("/api/heartbeat", ["HEAD"], () => Results.Ok());
+
+app.MapHub<HealthCheckHub>("api/health-hub");
 
 app.MapFallbackToFile("/index.html");
 
